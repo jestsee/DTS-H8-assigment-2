@@ -17,10 +17,10 @@ func ConnectDB(config *Config) *gorm.DB {
 	}
 	fmt.Println("? Connected Successfully to the Database")
 
+	DB.Preload("Items").Find(&model.Orders{})
+
 	DB.Migrator().CreateConstraint(&model.Orders{}, "Items")
 	DB.Migrator().CreateConstraint(&model.Orders{}, "fk_orders_items")
-	// DB.Migrator().CreateConstraint(&model.Items{}, "Orders")
-	// DB.Migrator().CreateConstraint(&model.Items{}, "fk_items_orders")
 	DB.AutoMigrate(&model.Orders{}, &model.Items{})
 	if err != nil {
 		log.Println(err)

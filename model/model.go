@@ -1,10 +1,16 @@
 package model
 
+import (
+	"log"
+	"time"
+	"gorm.io/gorm"
+)
+
 type Orders struct {
-	Order_id      uint    `json:"orderId" gorm:"primaryKey"`
-	Customer_name string  `json:"customerName"`
-	Ordered_at    string  `json:"orderedAt"`
-	Items         []Items `gorm:"foreignKey:Item_id"`
+	Order_id      uint      `json:"orderId" gorm:"primaryKey"`
+	Customer_name string    `json:"customerName"`
+	Ordered_at    time.Time `json:"orderedAt"`
+	Items         []Items   `gorm:"foreignKey:Item_id"`
 }
 
 type Items struct {
@@ -12,9 +18,11 @@ type Items struct {
 	Item_code   string `json:"itemCode"`
 	Description string `json:"description"`
 	Quantity    uint   `json:"quantity"`
-	Order_id    uint   `json:"orderId"`
-	// Orders      Orders `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:Order_id"`
+	Order_id    uint   `json:"orderId" gorm:"foreignKey:Order_id"`
 }
 
-// satu orders ada many items
-// satu items belongs to orders
+func (u *Orders) AfterCreate(tx *gorm.DB) (err error) {
+	log.Println("AFTER CREATE CALLED")
+	tx.Model(u.Items).Update("order_id", u.Order_id)
+	return
+}
