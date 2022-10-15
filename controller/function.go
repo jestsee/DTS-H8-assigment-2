@@ -21,8 +21,6 @@ func (idb *InDB) CreateOrder(c *gin.Context) {
 	})
 }
 
-// TODO cuma baca element pertama array items
-
 // get orders
 func (idb *InDB) GetOrders(c *gin.Context) {
 	var (
