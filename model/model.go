@@ -14,11 +14,11 @@ type Orders struct {
 }
 
 type Items struct {
-	Item_id     uint   `json:"itemId" gorm:"primaryKey"`
+	Item_id     uint   `json:"itemId" gorm:"primaryKey;autoIncrement"`
 	Item_code   string `json:"itemCode"`
 	Description string `json:"description"`
 	Quantity    uint   `json:"quantity"`
-	Order_id    uint   `json:"orderId" gorm:"foreignKey:Order_id"`
+	Order_id    uint   `json:"orderId" gorm:"foreignKey:Item_id"`
 }
 
 func (u *Orders) AfterCreate(tx *gorm.DB) (err error) {

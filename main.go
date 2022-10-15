@@ -17,6 +17,8 @@ func main () {
 	inDB := &controller.InDB{DB: db}
 	router := gin.Default()
 
+	router.GET("/orders", inDB.GetOrders)
 	router.POST("/orders", inDB.CreateOrder)
+	router.DELETE("/orders/:orderId", inDB.DeleteOrder)
 	router.Run(":3000")
 }
