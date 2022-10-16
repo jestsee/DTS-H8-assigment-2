@@ -7,4 +7,4 @@
 5. Cd to `assignment-2`
 6. Install all the dependencies `go get assignment-2`
 7. Run `air` or `go run main.go`, the API will run on localhost:3000
-8. Check http://localhost:3000/docs/index.html for documentations
+8. Check http://localhost:3000/docs/index.html for documentation
