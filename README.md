@@ -5,6 +5,6 @@
 3. Create a new PostgreSQL database named `assignment2`
 4. Fill in your PostgreSQL password on the `app.env` file
 5. Cd to `assignment-2`
-6. Install all the dependencies `go get assignment-2`
+6. Install all the dependencies
 7. Run `air` or `go run main.go`, the API will run on localhost:3000
 8. Check http://localhost:3000/docs/index.html for documentation
