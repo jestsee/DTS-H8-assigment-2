@@ -7,7 +7,14 @@ import (
 	"net/http"
 )
 
-// Create order
+// CreateOrder godoc
+// @Summary Create new order
+// @Description Create new order
+// @Tag orders
+// @Produce json
+// @Param order body model.Orders true "Create order"
+// @Success 201 {object} model.Orders
+// @Router /orders [post]
 func (idb *InDB) CreateOrder(c *gin.Context) {
 	var orders model.Orders
 	c.Bind(&orders)
@@ -21,7 +28,13 @@ func (idb *InDB) CreateOrder(c *gin.Context) {
 	})
 }
 
-// Get orders
+// GetOrders godoc
+// @Summary Get details of all orders
+// @Description Get details of all orders
+// @Tag orders
+// @Produce json
+// @Success 200 {array} model.Orders
+// @Router /orders [get]
 func (idb *InDB) GetOrders(c *gin.Context) {
 	var (
 		orders []model.Orders
@@ -56,7 +69,15 @@ func (idb *InDB) GetOrders(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-// Update order
+// UpdateOrder godoc
+// @Summary Update existing order
+// @Description Update existing order
+// @Tag orders
+// @Produce json
+// @Param id path int true "order id" 
+// @Param order body model.Orders true "order body"
+// @Success 200 {object} model.Orders
+// @Router /orders/{orderId} [put]
 func (idb *InDB) UpdateOrder(c *gin.Context) {
 	var orders model.Orders
 
@@ -80,7 +101,14 @@ func (idb *InDB) UpdateOrder(c *gin.Context) {
 	})
 }
 
-// Delete order
+// DeleteOrder godoc
+// @Summary Delete existing order
+// @Description Delete existing order
+// @Tag orders
+// @Produce json
+// @Param id path string true "todo ID"
+// @Success 200 {object} string
+// @Router /orders/{orderId} [delete]
 func (idb *InDB) DeleteOrder(c *gin.Context) {
 	var orders model.Orders
 	id := c.Param("orderId")
