@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-// create order
+// Create order
 func (idb *InDB) CreateOrder(c *gin.Context) {
 	var orders model.Orders
 	c.Bind(&orders)
@@ -21,7 +21,7 @@ func (idb *InDB) CreateOrder(c *gin.Context) {
 	})
 }
 
-// get orders
+// Get orders
 func (idb *InDB) GetOrders(c *gin.Context) {
 	var (
 		orders []model.Orders
@@ -56,30 +56,48 @@ func (idb *InDB) GetOrders(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-// update order
-// delete order
-func (idb *InDB) DeleteOrder(c *gin.Context) {
-	var (
-		orders model.Orders
-		result gin.H
-	)
+// Update order
+func (idb *InDB) UpdateOrder(c *gin.Context) {
+	var orders model.Orders
+
 	id := c.Param("orderId")
+
 	err := idb.DB.First(&orders, id).Error
 	if err != nil {
-		result = gin.H{
-			"result": "data not found",
-		}
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
+	
+	c.Bind(&orders)
+
+	err = idb.DB.Save(&orders).Error
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"result": orders,
+	})
+}
+
+// Delete order
+func (idb *InDB) DeleteOrder(c *gin.Context) {
+	var orders model.Orders
+	id := c.Param("orderId")
+
+	err := idb.DB.First(&orders, id).Error
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
 	err = idb.DB.Delete(&orders).Error
 	if err != nil {
-		result = gin.H{
-			"result": err,
-		}
-	} else {
-		result = gin.H{
-			"result": "Data deleted succesfully",
-		}
+		c.AbortWithError(500, err)
+		return
 	}
-	c.JSON(http.StatusOK, result)
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "Data deleted succesfully",
+	})
 }
-// TODO violates FK
