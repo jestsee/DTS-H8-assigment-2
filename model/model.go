@@ -3,8 +3,6 @@ package model
 import (
 	"log"
 	"time"
-
-	// "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
@@ -26,5 +24,12 @@ type Items struct {
 func (o *Orders) BeforeDelete(tx *gorm.DB) error {
 	log.Println("BEFORE DELETE CALLED")
 	err := tx.Model(o.Items).Where("order_id = ?", o.Order_id).Delete(o.Items).Error
+	return err
+}
+
+func (o *Orders) AfterUpdate(tx *gorm.DB) error {
+	log.Println("AFTER UPDATE CALLED")
+
+	err := tx.Model(o.Items).Where("order_id = ?", o.Order_id).Save(o.Items).Error
 	return err
 }
